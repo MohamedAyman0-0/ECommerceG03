@@ -1,5 +1,11 @@
 
-namespace ECommerceG03
+
+using DomainLayer.Contracts;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+using Persistence.Data.Contexts;
+
+namespace E_Commerce
 {
     public class Program
     {
@@ -7,6 +13,7 @@ namespace ECommerceG03
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region Add services to the container
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -14,8 +21,27 @@ namespace ECommerceG03
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<StoreDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+
+            #endregion
+
             var app = builder.Build();
 
+            #region Data Seeding
+
+            var scope = app.Services.CreateScope();
+
+            var seed = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+
+            seed.DataSeed();
+            #endregion
+
+
+            #region Configure the HTTP request pipeline
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -29,6 +55,7 @@ namespace ECommerceG03
 
 
             app.MapControllers();
+            #endregion
 
             app.Run();
         }
