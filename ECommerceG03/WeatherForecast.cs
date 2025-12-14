@@ -1,4 +1,4 @@
-namespace ECommerceG03
+namespace E_Commerce
 {
     public class WeatherForecast
     {
