@@ -11,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="exceptions\" />
+    <None Include="Models\ProductType.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Models\ProductType.cs" />
+    <PackageReference Include="Uno.UI" Version="5.6.99" />
   </ItemGroup>
 
 </Project>
